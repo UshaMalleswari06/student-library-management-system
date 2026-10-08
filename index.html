@@ -1,0 +1,925 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Libra | Student Library</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Segoe UI", Arial, sans-serif;
+}
+
+:root {
+    --primary: #6256d9;
+    --dark: #22213f;
+    --bg: #f6f7fc;
+    --muted: #8589a5;
+}
+
+body {
+    background: var(--bg);
+    color: var(--dark);
+}
+
+.layout {
+    display: flex;
+    min-height: 100vh;
+}
+
+.sidebar {
+    width: 245px;
+    background: #22213f;
+    color: white;
+    padding: 28px 18px;
+    flex-shrink: 0;
+}
+
+.logo {
+    font-size: 25px;
+    font-weight: 800;
+    margin: 0 10px 42px;
+}
+
+.logo span {
+    color: #a89fff;
+}
+
+.menu-title {
+    color: #9290b3;
+    font-size: 11px;
+    letter-spacing: 2px;
+    margin: 25px 12px 12px;
+}
+
+.menu a {
+    display: block;
+    color: #c9c8df;
+    padding: 14px 13px;
+    text-decoration: none;
+    border-radius: 10px;
+    margin: 5px 0;
+    transition: 0.2s;
+}
+
+.menu a:hover,
+.menu a.active {
+    color: white;
+    background: #6256d9;
+}
+
+.sidebar-note {
+    margin-top: 55px;
+    background: #343252;
+    padding: 17px;
+    border-radius: 13px;
+    color: #d7d5f5;
+    font-size: 13px;
+    line-height: 1.7;
+}
+
+.main {
+    flex: 1;
+    min-width: 0;
+    padding: 30px 4%;
+}
+
+.topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.topbar p {
+    color: var(--muted);
+    margin-top: 6px;
+    font-size: 14px;
+}
+
+.avatar {
+    background: #e6e2ff;
+    color: #5144bc;
+    border-radius: 50%;
+    width: 45px;
+    height: 45px;
+    display: grid;
+    place-items: center;
+    font-weight: bold;
+}
+
+.welcome {
+    background: linear-gradient(115deg, #6256d9, #9184f3);
+    border-radius: 20px;
+    color: white;
+    padding: 32px;
+    margin-bottom: 26px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    overflow: hidden;
+}
+
+.welcome h2 {
+    font-size: clamp(23px, 3vw, 32px);
+    margin-bottom: 12px;
+}
+
+.welcome p {
+    color: #eeecff;
+    line-height: 1.7;
+}
+
+.welcome-icon {
+    font-size: 80px;
+}
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 18px;
+    margin-bottom: 30px;
+}
+
+.stat {
+    background: white;
+    padding: 23px;
+    border-radius: 15px;
+    box-shadow: 0 5px 25px #28235b08;
+    border: 1px solid #eeeeF7;
+}
+
+.stat-icon {
+    font-size: 25px;
+    margin-bottom: 15px;
+}
+
+.stat p {
+    color: var(--muted);
+    font-size: 14px;
+}
+
+.stat h2 {
+    font-size: 30px;
+    margin-top: 8px;
+}
+
+.section-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 18px;
+}
+
+.section-head h2 {
+    font-size: 21px;
+}
+
+.search {
+    padding: 12px 15px;
+    border: 1px solid #e1e3f0;
+    border-radius: 10px;
+    background: white;
+    width: min(100%, 290px);
+    outline-color: var(--primary);
+}
+
+.panel {
+    background: white;
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 26px;
+    border: 1px solid #eeeef6;
+}
+
+.book-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 16px;
+}
+
+.book-card {
+    border: 1px solid #eeeef6;
+    border-radius: 13px;
+    padding: 18px;
+    transition: transform .2s, box-shadow .2s;
+}
+
+.book-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 25px #25214b12;
+}
+
+.book-cover {
+    height: 115px;
+    display: grid;
+    place-items: center;
+    font-size: 46px;
+    border-radius: 10px;
+    margin-bottom: 16px;
+    background: #eeebff;
+}
+
+.book-card:nth-child(3n+2) .book-cover {
+    background: #e2f7f1;
+}
+
+.book-card:nth-child(3n) .book-cover {
+    background: #fff0df;
+}
+
+.book-card h3 {
+    font-size: 16px;
+    margin-bottom: 7px;
+}
+
+.author {
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 15px;
+}
+
+.status {
+    display: inline-block;
+    padding: 6px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    background: #e4f8ed;
+    color: #218653;
+}
+
+.status.issued {
+    background: #fff0d8;
+    color: #a36b14;
+}
+
+.actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    margin-top: 15px;
+}
+
+button {
+    cursor: pointer;
+    border: 0;
+    border-radius: 8px;
+    padding: 10px 13px;
+    font-weight: 600;
+}
+
+.primary {
+    background: var(--primary);
+    color: white;
+}
+
+.secondary {
+    background: #eeecff;
+    color: #5144bc;
+}
+
+.danger {
+    background: #ffebed;
+    color: #bd3546;
+}
+
+input, select {
+    padding: 12px;
+    border: 1px solid #dedfee;
+    border-radius: 8px;
+    width: 100%;
+    margin: 7px 0 14px;
+    background: white;
+}
+
+label {
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+}
+
+footer {
+    text-align: center;
+    color: var(--muted);
+    padding: 20px 0;
+    font-size: 13px;
+}
+
+@media(max-width: 850px) {
+    .sidebar { width: 190px; }
+    .stats { grid-template-columns: 1fr; }
+    .welcome-icon { font-size: 55px; }
+}
+
+@media(max-width: 580px) {
+    .layout { display: block; }
+    .sidebar { width: 100%; padding: 18px; }
+    .logo { margin: 0 5px 15px; }
+    .menu-title, .sidebar-note { display: none; }
+    .menu { display: flex; flex-wrap: wrap; gap: 5px; }
+    .menu a { padding: 10px; font-size: 13px; }
+    .main { padding: 22px 15px; }
+    .welcome { padding: 23px; }
+    .welcome-icon { display: none; }
+    .form-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+
+<body>
+<div class="layout">
+
+<aside class="sidebar">
+    <div class="logo">📚 <span>Libra.</span></div>
+
+    <p class="menu-title">MAIN MENU</p>
+    <nav class="menu">
+        <a class="active" href="#home">⌂ Dashboard</a>
+        <a href="#books">▤ All Books</a>
+        <a href="#manage">＋ Add New Book</a>
+        <a href="#about">ⓘ About Project</a>
+    </nav>
+
+    <div class="sidebar-note">
+        ✨ Your learning journey starts here.<br>
+        Discover a new book every day!
+    </div>
+</aside>
+
+<main class="main" id="home">
+    <header class="topbar">
+        <div>
+            <h1>Library Dashboard</h1>
+            <p>Welcome back! Explore your library today.</p>
+        </div>
+        <div class="avatar">SL</div>
+    </header>
+
+    <section class="welcome">
+        <div>
+            <h2>Knowledge begins here! 📖</h2>
+            <p>Manage your books, explore new stories,<br>
+            and keep your learning organized.</p>
+        </div>
+        <div class="welcome-icon">📚</div>
+    </section>
+
+    <section class="stats">
+        <div class="stat">
+            <div class="stat-icon">📚</div>
+            <p>Total Books</p>
+            <h2 id="total">0</h2>
+        </div>
+        <div class="stat">
+            <div class="stat-icon">🟢</div>
+            <p>Available Books</p>
+            <h2 id="available">0</h2>
+        </div>
+        <div class="stat">
+            <div class="stat-icon">🟠</div>
+            <p>Books Issued</p>
+            <h2 id="issued">0</h2>
+        </div>
+    </section>
+
+    <section class="panel" id="books">
+        <div class="section-head">
+            <h2>Explore Books</h2>
+            <input class="search" id="search"
+            placeholder="🔍 Search books or authors..."
+            oninput="renderBooks()">
+        </div>
+        <div class="book-grid" id="bookGrid"></div>
+    </section>
+
+    <section class="panel" id="manage">
+        <div class="section-head">
+            <h2>＋ Add a New Book</h2>
+        </div>
+        <form id="bookForm">
+            <div class="form-grid">
+                <div>
+                    <label for="bookName">Book Name</label>
+                    <input id="bookName" required placeholder="Enter book title">
+                </div>
+                <div>
+                    <label for="authorName">Author Name</label>
+                    <input id="authorName" required placeholder="Enter author name">
+                </div>
+            </div>
+            <label for="bookStatus">Book Status</label>
+            <select id="bookStatus">
+                <option>Available</option>
+                <option>Issued</option>
+            </select>
+            <button class="primary" type="submit">Add Book</button>
+        </form>
+    </section>
+
+    <section class="panel" id="about">
+        <h2>About This Project</h2>
+        <p style="margin-top:12px;line-height:1.8;color:#8589a5">
+        Student Library Management System is a mini project built
+        using HTML, CSS and JavaScript. It helps users manage book
+        records through a simple and attractive interface.
+        </p>
+    </section>
+
+    <footer>© 2026 Libra Student Library | Mini Project</footer>
+</main>
+</div>
+
+<script>
+const starterBooks = [
+    {name:"Wings of Fire", author:"A.P.J. Abdul Kalam", status:"Available"},
+    {name:"The Alchemist", author:"Paulo Coelho", status:"Available"},
+    {name:"Rich Dad Poor Dad", author:"Robert Kiyosaki", status:"Issued"},
+    {name:"Harry Potter", author:"J.K. Rowling", status:"Available"},
+    {name:"Atomic Habits", author:"James Clear", status:"Available"},
+    {name:"The Great Gatsby", author:"F. Scott Fitzgerald", status:"Issued"}
+];
+
+let books;
+try {
+    const saved = localStorage.getItem("libraryBooks");
+    books = saved ? JSON.parse(saved) : starterBooks;
+    if (!Array.isArray(books)) books = starterBooks;
+} catch (error) {
+    books = starterBooks;
+}
+
+function saveBooks() {
+    try {
+        localStorage.setItem("libraryBooks", JSON.stringify(books));
+    } catch (error) {
+        alert("Books could not be saved in this browser.");
+    }
+}
+
+function renderBooks() {
+    const query = document.getElementById("search").value.toLowerCase();
+    const grid = document.getElementById("bookGrid");
+    grid.innerHTML = "";
+
+    const filtered = books.filter(book =>
+        book.name.toLowerCase().includes(query) ||
+        book.author.toLowerCase().includes(query)
+    );
+
+    filtered.forEach(book => {
+        const index = books.indexOf(book);
+        const card = document.createElement("article");
+        card.className = "book-card";
+
+        const cover = document.createElement("div");
+        cover.className = "book-cover";
+        cover.textContent = "📘";
+
+        const title = document.createElement("h3");
+        title.textContent = book.name;
+
+        const author = document.createElement("p");
+        author.className = "author";
+        author.textContent = "By " + book.author;
+
+        const status = document.createElement("span");
+        status.className = "status" +
+            (book.status === "Issued" ? " issued" : "");
+        status.textContent = book.status;
+
+        const actions = document.createElement("div");
+        actions.className = "actions";
+
+        const toggle = document.createElement("button");
+        toggle.className = "secondary";
+        toggle.textContent = book.status === "Available" ? "Issue" : "Return";
+        toggle.onclick = () => {
+            books[index].status =
+                books[index].status === "Available" ? "Issued" : "Available";
+            saveBooks();
+            renderBooks();
+        };
+
+        const del = document.createElement("button");
+        del.className = "danger";
+        del.textContent = "Delete";
+        del.onclick = () => {
+            if (confirm("Delete this book?")) {
+                books.splice(index, 1);
+                saveBooks();
+                renderBooks();
+            }
+        };
+
+        actions.append(toggle, del);
+        card.append(cover, title, author, status, actions);
+        grid.appendChild(card);
+    });
+
+    if (filtered.length === 0) {
+        const message = document.createElement("p");
+        message.textContent = "No books found. Try another search.";
+        grid.appendChild(message);
+    }
+
+    document.getElementById("total").textContent = books.length;
+    document.getElementById("available").textContent =
+        books.filter(b => b.status === "Available").length;
+    document.getElementById("issued").textContent =
+        books.filter(b => b.status === "Issued").length;
+}
+
+document.getElementById("bookForm").addEventListener("submit", event => {
+    event.preventDefault();
+
+    const name = document.getElementById("bookName").value.trim();
+    const author = document.getElementById("authorName").value.trim();
+    const status = document.getElementById("bookStatus").value;
+
+    if (!name || !author) return;
+
+    books.push({name, author, status});
+    saveBooks();
+    event.target.reset();
+    renderBooks();
+    alert("Book added successfully!");
+});
+
+renderBooks();
+</script>
+
+<!-- STUDENT DETAILS PAGE -->
+<section id="students" style="padding:25px; background:#f4f5fb; border-radius:15px; margin:20px 0; color:#222;">
+  <h2 style="color:#34246b;">🎓 Student Details</h2>
+  <p>Add and manage library student records.</p>
+
+  <form id="studentForm" style="display:grid; gap:12px; max-width:500px;">
+    <input id="studentId" type="text" placeholder="Student ID" required
+      style="padding:12px; border:1px solid #ccc; border-radius:8px;">
+
+    <input id="studentName" type="text" placeholder="Student Name" required
+      style="padding:12px; border:1px solid #ccc; border-radius:8px;">
+
+    <input id="studentDept" type="text" placeholder="Department" required
+      style="padding:12px; border:1px solid #ccc; border-radius:8px;">
+
+    <input id="studentPhone" type="tel" placeholder="Phone Number"
+      style="padding:12px; border:1px solid #ccc; border-radius:8px;">
+
+    <button type="submit"
+      style="padding:12px; background:#5b42b4; color:white; border:0; border-radius:8px; cursor:pointer;">
+      + Add Student
+    </button>
+  </form>
+
+  <h3 style="margin-top:25px;">Student List</h3>
+  <div style="overflow-x:auto;">
+    <table style="width:100%; border-collapse:collapse; background:white;">
+      <thead>
+        <tr style="background:#e8e2ff;">
+          <th style="padding:12px;">Student ID</th>
+          <th style="padding:12px;">Name</th>
+          <th style="padding:12px;">Department</th>
+          <th style="padding:12px;">Phone</th>
+          <th style="padding:12px;">Action</th>
+        </tr>
+      </thead>
+      <tbody id="studentList"></tbody>
+    </table>
+  </div>
+</section>
+
+<script>
+(function () {
+  const form = document.getElementById("studentForm");
+  const list = document.getElementById("studentList");
+
+  let students = JSON.parse(localStorage.getItem("libraryStudents") || "[]");
+
+  function renderStudents() {
+    list.replaceChildren();
+
+    students.forEach((student, index) => {
+      const row = document.createElement("tr");
+
+      [student.id, student.name, student.dept, student.phone].forEach(value => {
+        const cell = document.createElement("td");
+        cell.style.cssText = "padding:12px; border-bottom:1px solid #eee; text-align:center;";
+        cell.textContent = value || "—";
+        row.appendChild(cell);
+      });
+
+      const actionCell = document.createElement("td");
+      actionCell.style.cssText = "padding:12px; text-align:center;";
+
+      const deleteButton = document.createElement("button");
+      deleteButton.textContent = "Delete";
+      deleteButton.style.cssText = "background:#e5484d; color:white; border:0; padding:7px 10px; border-radius:6px; cursor:pointer;";
+
+      deleteButton.addEventListener("click", () => {
+        students.splice(index, 1);
+        saveStudents();
+      });
+
+      actionCell.appendChild(deleteButton);
+      row.appendChild(actionCell);
+      list.appendChild(row);
+    });
+  }
+
+  function saveStudents() {
+    localStorage.setItem("libraryStudents", JSON.stringify(students));
+    renderStudents();
+  }
+
+  form.addEventListener("submit", event => {
+    event.preventDefault();
+
+    const id = document.getElementById("studentId").value.trim();
+
+    if (students.some(student => student.id.toLowerCase() === id.toLowerCase())) {
+      alert("This Student ID already exists!");
+      return;
+    }
+
+    students.push({
+      id,
+      name: document.getElementById("studentName").value.trim(),
+      dept: document.getElementById("studentDept").value.trim(),
+      phone: document.getElementById("studentPhone").value.trim()
+    });
+
+    saveStudents();
+    form.reset();
+  });
+
+  renderStudents();
+})();
+</script>
+
+<!-- ISSUE AND RETURN BOOKS -->
+<section id="issueBooks" style="margin:20px 0;padding:25px;background:#f4f5fb;border-radius:15px;color:#222;">
+  <h2 style="color:#34246b;">📚 Issue & Return Books</h2>
+  <p>Issue books to students and manage returned books.</p>
+
+  <form id="issueForm" style="display:grid;gap:12px;max-width:500px;">
+    <input id="issueStudent" placeholder="Student ID" required
+      style="padding:12px;border:1px solid #ccc;border-radius:8px;">
+
+    <input id="issueBook" placeholder="Book Name" required
+      style="padding:12px;border:1px solid #ccc;border-radius:8px;">
+
+    <label>Issue Date</label>
+    <input id="issueDate" type="date" required
+      style="padding:12px;border:1px solid #ccc;border-radius:8px;">
+
+    <label>Return Due Date</label>
+    <input id="dueDate" type="date" required
+      style="padding:12px;border:1px solid #ccc;border-radius:8px;">
+
+    <button type="submit"
+      style="padding:12px;background:#5b42b4;color:white;border:0;border-radius:8px;cursor:pointer;">
+      + Issue Book
+    </button>
+  </form>
+
+  <h3 style="margin-top:25px;">Issued Books List</h3>
+  <div style="overflow-x:auto;">
+    <table style="width:100%;border-collapse:collapse;background:white;">
+      <thead>
+        <tr style="background:#e8e2ff;">
+          <th style="padding:10px;">Student ID</th>
+          <th style="padding:10px;">Book</th>
+          <th style="padding:10px;">Issue Date</th>
+          <th style="padding:10px;">Due Date</th>
+          <th style="padding:10px;">Status</th>
+          <th style="padding:10px;">Action</th>
+        </tr>
+      </thead>
+      <tbody id="issuedList"></tbody>
+    </table>
+  </div>
+</section>
+
+<script>
+(function () {
+  const form = document.getElementById("issueForm");
+  const list = document.getElementById("issuedList");
+
+  let issuedBooks = JSON.parse(localStorage.getItem("libraryIssuedBooks") || "[]");
+
+  function renderIssuedBooks() {
+    list.replaceChildren();
+
+    issuedBooks.forEach((item, index) => {
+      const row = document.createElement("tr");
+
+      [item.student, item.book, item.issueDate, item.dueDate, item.status].forEach(value => {
+        const cell = document.createElement("td");
+        cell.textContent = value;
+        cell.style.cssText = "padding:10px;text-align:center;border-bottom:1px solid #eee;";
+        row.appendChild(cell);
+      });
+
+      const actionCell = document.createElement("td");
+      actionCell.style.cssText = "padding:10px;text-align:center;";
+
+      if (item.status === "Issued") {
+        const returnButton = document.createElement("button");
+        returnButton.textContent = "Return";
+        returnButton.style.cssText = "padding:7px 10px;background:#16865c;color:white;border:0;border-radius:6px;cursor:pointer;";
+
+        returnButton.addEventListener("click", () => {
+          issuedBooks[index].status = "Returned";
+          saveIssuedBooks();
+        });
+
+        actionCell.appendChild(returnButton);
+      } else {
+        actionCell.textContent = "Completed ✓";
+      }
+
+      row.appendChild(actionCell);
+      list.appendChild(row);
+    });
+  }
+
+  function saveIssuedBooks() {
+    localStorage.setItem("libraryIssuedBooks", JSON.stringify(issuedBooks));
+    renderIssuedBooks();
+  }
+
+  form.addEventListener("submit", event => {
+    event.preventDefault();
+
+    const student = document.getElementById("issueStudent").value.trim();
+    const book = document.getElementById("issueBook").value.trim();
+    const issueDate = document.getElementById("issueDate").value;
+    const dueDate = document.getElementById("dueDate").value;
+
+    if (dueDate < issueDate) {
+      alert("Due date cannot be before the issue date.");
+      return;
+    }
+
+    issuedBooks.push({
+      student,
+      book,
+      issueDate,
+      dueDate,
+      status: "Issued"
+    });
+
+    saveIssuedBooks();
+    form.reset();
+  });
+
+  renderIssuedBooks();
+})();
+</script>
+
+<!-- LIBRARY SEARCH FEATURE -->
+<section style="margin:20px 0;padding:25px;background:#f4f5fb;border-radius:15px;color:#222;">
+  <h2 style="color:#34246b;">🔍 Search Library Records</h2>
+  <input
+    id="librarySearch"
+    type="text"
+    placeholder="Search student ID, student name or issued book..."
+    style="width:100%;box-sizing:border-box;padding:13px;border:1px solid #ccc;border-radius:8px;"
+  />
+  <div id="searchResults" style="margin-top:15px;"></div>
+</section>
+
+<script>
+(function () {
+  const search = document.getElementById("librarySearch");
+  const results = document.getElementById("searchResults");
+
+  search.addEventListener("input", function () {
+    const query = search.value.trim().toLowerCase();
+
+    const students = JSON.parse(
+      localStorage.getItem("libraryStudents") || "[]"
+    );
+    const issued = JSON.parse(
+      localStorage.getItem("libraryIssuedBooks") || "[]"
+    );
+
+    results.replaceChildren();
+
+    if (!query) {
+      results.textContent = "Type to search students and issued books.";
+      return;
+    }
+
+    const matches = [
+      ...students
+        .filter(s => [s.id, s.name, s.dept].some(v =>
+          (v || "").toLowerCase().includes(query)
+        ))
+        .map(s => `Student: ${s.name} | ID: ${s.id} | Department: ${s.dept}`),
+
+      ...issued
+        .filter(b => [b.student, b.book, b.status].some(v =>
+          (v || "").toLowerCase().includes(query)
+        ))
+        .map(b => `Book: ${b.book} | Student ID: ${b.student} | Status: ${b.status}`)
+    ];
+
+    if (matches.length === 0) {
+      results.textContent = "No matching records found.";
+      return;
+    }
+
+    matches.forEach(match => {
+      const item = document.createElement("p");
+      item.textContent = match;
+      item.style.cssText =
+        "padding:12px;background:white;border-radius:8px;margin:8px 0;";
+      results.appendChild(item);
+    });
+  });
+})();
+</script>
+
+<!-- LIBRARY STATISTICS -->
+<section id="libraryStats" style="margin:20px 0;padding:25px;background:#f4f5fb;border-radius:15px;color:#222;">
+  <h2 style="color:#34246b;">📊 Library Statistics</h2>
+
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:15px;">
+    <div style="padding:20px;background:white;border-radius:12px;border-left:5px solid #6941c6;">
+      <p>Total Students</p>
+      <h2 id="totalStudents">0</h2>
+    </div>
+
+    <div style="padding:20px;background:white;border-radius:12px;border-left:5px solid #16865c;">
+      <p>Total Books Issued</p>
+      <h2 id="totalIssued">0</h2>
+    </div>
+
+    <div style="padding:20px;background:white;border-radius:12px;border-left:5px solid #e5a000;">
+      <p>Books Returned</p>
+      <h2 id="totalReturned">0</h2>
+    </div>
+
+    <div style="padding:20px;background:white;border-radius:12px;border-left:5px solid #e5484d;">
+      <p>Currently Issued</p>
+      <h2 id="currentlyIssued">0</h2>
+    </div>
+  </div>
+</section>
+
+<script>
+(function () {
+  function updateLibraryStats() {
+    const students = JSON.parse(
+      localStorage.getItem("libraryStudents") || "[]"
+    );
+
+    const issuedBooks = JSON.parse(
+      localStorage.getItem("libraryIssuedBooks") || "[]"
+    );
+
+    document.getElementById("totalStudents").textContent =
+      students.length;
+
+    document.getElementById("totalIssued").textContent =
+      issuedBooks.length;
+
+    document.getElementById("totalReturned").textContent =
+      issuedBooks.filter(book => book.status === "Returned").length;
+
+    document.getElementById("currentlyIssued").textContent =
+      issuedBooks.filter(book => book.status === "Issued").length;
+  }
+
+  updateLibraryStats();
+
+  window.addEventListener("storage", updateLibraryStats);
+
+  document.addEventListener("click", function (event) {
+    if (
+      event.target.closest("#issueForm") ||
+      event.target.closest("#studentForm") ||
+      event.target.closest("#issuedList")
+    ) {
+      setTimeout(updateLibraryStats, 100);
+    }
+  });
+})();
+</script>
+</body>
+</html>
